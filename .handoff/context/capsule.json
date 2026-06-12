@@ -1,0 +1,10 @@
+{
+  "schema": "handoff.context_capsule.v1",
+  "project_name": "meta_plugin_protocol",
+  "role": "Rust library crate defining the JSON-over-stdio protocol between the meta CLI host and its subprocess plugins (PluginInfo discovery via --meta-plugin-info, PluginRequest/PlanResponse exec via --meta-plugin-exec). Also provides the run_plugin() entrypoint and logger init that every meta_*_cli plugin embeds.",
+  "plane": "foundation",
+  "tier": "A",
+  "northstar": "Meta makes multi-repo feel like monorepo without the downsides; the canon machinery stays green, versioned by the parent distribution.",
+  "next_command": "Plan in kb first (git kb board); mint execution cards via hf (ADR-0003)",
+  "source": "ARCHITECTURE-TRUTH.md census 2026-06-12"
+}
