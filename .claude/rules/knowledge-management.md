@@ -1,44 +1,35 @@
 # Knowledge Management
 
-Maintain the GitKB knowledge base as you work. Documents are your persistent memory across sessions.
+Maintain handoff's planning plane and execution plane together, but never confuse authority: `hf status`/ledger truth wins over `.kb` prose.
 
-## Before Starting Work
+## handoff's local `.kb` (ADR-0018 D7)
 
-- Check `kb_board` or `git-kb board --json` to see what's active and what's blocked
-- If you're about to do non-trivial work and no task exists for it, create one first
-- Search before creating: `kb_search` with keywords to avoid duplicates
-- Agents must use MCP or `--json` for slug/ID discovery. Never copy slugs, IDs, symbol IDs, or relationship targets from human-readable table/tree/board output because it may be truncated.
+handoff has its OWN durable `.kb/`. Load context before non-trivial work:
 
-## While Working
+```bash
+git kb list --path context/
+git kb checkout --path context/
+git kb board
+```
 
-- Add progress entries to the active task document as you make progress
-- Include `[[tasks/...]]` wikilinks in git commit messages for related tasks:
-  ```
-  fix: resolve timeout issue
+If no task exists for non-trivial work, create the kb task first; for existing HFTASK cards, use the card/ledger and mirror progress back.
 
-  Implements [[tasks/my-task]]
-  ```
-- When you discover bugs or issues, create incident documents — don't just fix and forget
+## Durable state residency
 
-## After Significant Work
+Commit durable text; ignore rebuilt caches:
 
-- Update `context/overridable/active` to reflect what changed and what's next
-- Check off completed acceptance criteria in task documents
-- Add completion evidence (commit hashes, test results) before marking tasks done
+- Commit: `.kb/store/**`, `.handoff/ledger.events.jsonl`, task cards, ADRs, rendered handoff views when policy says they are durable.
+- Ignore: `.kb/.cache/**`, `.kb/workspaces/**`, `.kb/config.toml`, `.handoff/ledger.db*`, `.grit/**`, `target/**`.
 
-## Commit Discipline
+## Two-way seam, one-way authority
 
-- **Always scope your commits** — pass `pathspecs` listing only the documents you modified:
-  ```
-  kb_commit with message: "Update task progress", pathspecs: ["tasks/my-task"]
-  ```
-  CLI equivalent: `git-kb commit -m "Update task progress" tasks/my-task`
-- **Never commit the entire workspace** — bare `kb_commit` (no pathspecs) commits ALL workspace changes, including other agents' uncommitted edits
-- **Check `kb_status` before committing** — if you see documents you didn't modify, exclude them from your pathspecs
+- **IN:** `hf task mint --from-kb <slug>` mints a witnessed task card.
+- **OUT:** `hf claim` / `checkpoint` / `done` / `release` mirror execution progress to kb.
+- `.kb` informs planning only. It never overrides ledger/Git truth.
 
-## Document Lifecycle
+## Progress evidence
 
-- **Create first, implement second** — the document IS your plan
-- **Update as you go** — don't wait until the end to document
-- **Complete the body before changing status** — never mark "done" without evidence
-- **Link everything** — tasks reference specs, incidents reference fixes, commits reference tasks
+- Add progress lines as you work.
+- Commit messages should reference the card or kb task.
+- Do not mark done without tests or an explicit witnessed waiver.
+- Store lessons in ICM when mandatory triggers fire.
