@@ -1,9 +1,9 @@
 [package]
 name = "meta_plugin_protocol"
-version.workspace = true
-edition.workspace = true
-license.workspace = true
-repository.workspace = true
+version = "0.2.25"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/FlexNetOS/meta_plugin_protocol"
 description = "Shared plugin protocol types for meta subprocess plugins"
 
 [dependencies]
